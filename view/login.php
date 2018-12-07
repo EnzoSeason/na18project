@@ -15,12 +15,11 @@ if($_SESSION != NULL) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 </head>
 <body>
-<hr WIDTH="100%">
-<div class="text-center">
-    <h1 color="#CC0000">Marketplace NA18 Group7</h1>
-</div>
-<hr WIDTH="100%">
-<div class="container">
+<nav class="navbar sticky-top navbar-dark bg-dark">
+    <a class="navbar-brand" href="/~na18a028/index.html">Marketplace NA18 Group 7</a>
+</nav>
+<br />
+<div class="container" style="margin-top:30px">
     <form action="/~na18a028/controller/loginController.php" method="POST"> 
     
     <fieldset class="form-group">
@@ -63,12 +62,15 @@ if($_SESSION != NULL) {
         </div>
     </div>
     
-    <div class="form-group row">
-        <div class="col-sm-10">
-        <button type="submit" class="btn btn-primary">Sign in</button>
-        </div>
-    </div>
+    <button type="submit" class="btn btn-primary">Log in</button>
     </form>
 </div>
+
+<footer class="footer">
+   <div class="text-center fixed-bottom">
+      <span class="text-muted">Created by LIU Jijie, BERGERON Célien, CECCHIN Valentin</span>
+   </div>
+</footer>
+
 </body>
 </html>
