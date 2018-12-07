@@ -1,3 +1,9 @@
+<?php 
+session_start();
+if($_SESSION != NULL) {
+    header('Location: /~na18a028/view/userHome.php');
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>

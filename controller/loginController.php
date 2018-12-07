@@ -1,6 +1,6 @@
 <?php
 session_start();
-$config = 'pgsql:host=tuxa.sme.utc;port=5432;dbname=dbna18028';
+$config = 'pgsql:host=tuxa.sme.utc;port=5432;dbname=dbna18a028';
 $dbuser = 'na18a028';
 $dbPassword = 'rWoO38Ra';
 $conn = new PDO($config,$dbuser,$dbPassword);
@@ -27,7 +27,7 @@ if($row != TRUE){
     $_SESSION['login'] = $_POST['login'];
     $_SESSION['nom'] = $row['nom'];
     $_SESSION['prenom'] = $row['prenom'];
-    //var_dump($_SESSION['nom']);
+    $conn = NULL;
     header('Location: /~na18a028/view/userHome.php');
 }
 

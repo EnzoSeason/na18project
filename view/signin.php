@@ -91,11 +91,11 @@
         </div>
         <div class="col">
             <label for="dateExp" class="col-form-label">Date d'expiration: </label>
-            <input type="text" class="form-control" id="dateExp" name="dateExp" placeholder="Date d'expiration: ">
+            <input type="text" class="form-control" id="dateExp" name="dateExp" placeholder="Date d'expiration ">
         </div>
         <div class="col">
             <label for="codeSecurity" class="col-form-label">Code de sécurité: </label>
-            <input type="text" class="form-control" id="codeSecurity" name="codeSecurity" placeholder="Code de sécurité: ">
+            <input type="text" class="form-control" id="codeSecurity" name="codeSecurity" placeholder="Code de sécurité ">
         </div>
     </div>
     
