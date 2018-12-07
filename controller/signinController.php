@@ -7,6 +7,6 @@
     <?php
         echo '<h3>Welcome, our new friend '.$_POST['login'].'</h3><br />';
     ?>
-    <a href="index.html">Back</a>  
+    <a href="/~na18a028/index.html">Back</a>  
 </body>
 </html>
