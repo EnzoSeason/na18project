@@ -24,10 +24,25 @@ if($row != TRUE){
     header('Location: /~na18a028/index.html');
 } else {
     session_unset();
+    //var_dump($row);
     $_SESSION['userType'] = $_POST['userType'];
     $_SESSION['login'] = $_POST['login'];
+    $_SESSION['password'] = $_POST['password'];
     $_SESSION['nom'] = $row['nom'];
     $_SESSION['prenom'] = $row['prenom'];
+    $_SESSION['adressemail'] = $row['adressemail'];
+    if(isset($row['adresse'])){
+        $_SESSION['adresse'] = $row['adresse'];
+    }
+    if(isset($row['coobanquenum'])){
+        $_SESSION['coobanquenum'] = $row['coobanquenum'];
+    }
+    if(isset($row['dateexpiration'])){
+        $_SESSION['dateexpiration'] = $row['dateexpiration'];
+    }
+    if(isset($row['cryptocarte'])){
+        $_SESSION['cryptocarte'] = $row['cryptocarte'];
+    }
     $conn = NULL;
     header('Location: /~na18a028/view/userHome.php');
 }

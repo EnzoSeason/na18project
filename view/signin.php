@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,6 +15,12 @@
 </nav>
 
 <div class="container" style="margin-top:30px">
+    <?php
+    if(isset($_SESSION['userExist'])){
+        session_unset();
+        echo'<p style="color:red;">Login ou Email a déjà existé. Verifiez les informations bancaires si vous avez besoin d\'un compte d\'Acheteur ou Vendeur.</p>';
+    }
+    ?>
     <form action="/~na18a028/controller/signinController.php" method="POST"> 
     
     <fieldset class="form-group">
@@ -62,19 +69,19 @@
             <input type="text" class="form-control" id="Nom" name="nom" placeholder="Nom">
         </div>
         <div class="col">
-            <label for="Préom" class="col-form-label">Nom</label>
-            <input type="text" class="form-control" id="Prénom" name="prenom" placeholder="Nom">
+            <label for="Préom" class="col-form-label">Prénom</label>
+            <input type="text" class="form-control" id="Prénom" name="prenom" placeholder="Prénom">
         </div>
     </div>
 
     <div class="form-group row">
         <label for="Email" class="col-sm-2 col-form-label">Email</label>
         <div class="col-sm-10">
-        <input type="email" class="form-control" id="Email" name="email" placeholder="Email" require>
+        <input type="email" class="form-control" id="Email" name="email" placeholder="Email" required>
         </div>
     </div>
 
-    <h6>Si vous avez besoin de créer un compte de Vendeur ou Acheteur, Vous devez remplir les informations bancaires</h6><br />
+    <h6>Si vous avez besoin de créer un compte de <span style="color:red;">Vendeur ou Acheteur</span>, Vous devez remplir <span style="color:red;">les informations bancaires</span></h6><br />
 
     <div class="form-group row">
         <label for="Address" class="col-sm-2 col-form-label">Adresse</label>
@@ -85,15 +92,15 @@
     <div class="form-group row">
         <div class="col">
             <label for="numCarte" class="col-form-label">Numéro de carte: </label>
-            <input type="text" class="form-control" id="numCarte" name="numCarte" placeholder="numéro de carte">
+            <input type="text" class="form-control" id="numCarte" name="coobanquenum" placeholder="16 numéros" minlength="16">
         </div>
         <div class="col">
             <label for="dateExp" class="col-form-label">Date d'expiration: </label>
-            <input type="text" class="form-control" id="dateExp" name="dateExp" placeholder="Date d'expiration ">
+            <input type="text" class="form-control" id="dateExp" name="dateexpiration" placeholder="00/00" pattern="\d\d/\d\d">
         </div>
         <div class="col">
             <label for="codeSecurity" class="col-form-label">Code de sécurité: </label>
-            <input type="text" class="form-control" id="codeSecurity" name="codeSecurity" placeholder="Code de sécurité ">
+            <input type="text" class="form-control" id="codeSecurity" name="cryptocarte" placeholder="3 numéros" minlength="3">
         </div>
     </div>
     
@@ -104,12 +111,6 @@
     </div>
     </form>
 </div>
-
-<footer class="footer">
-   <div class="text-center fixed-bottom">
-      <span class="text-muted">Created by LIU Jijie, BERGERON Célien, CECCHIN Valentin</span>
-   </div>
-</footer>
 
 </body>
 </html>

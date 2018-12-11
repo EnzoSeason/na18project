@@ -1,4 +1,4 @@
-<?php session_start() ?>
+<?php session_start();//var_dump($_SESSION);?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,20 +11,31 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">Marketplace NA18 Group 7</a>
+  <a class="navbar-brand" href="/~na18a028/index.html">Marketplace NA18 Group 7</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="#">
-            Bonjour <?php echo $_SESSION['userType']. ' ' . $_SESSION['nom']; ?> 
-        <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/~na18a028/view/account.php">
+            Bonjour <?php echo $_SESSION['userType']. ' ' . $_SESSION['nom']; ?><span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Panier </a>
-      </li>
+      <?php
+      if($_SESSION['userType'] == 'Acheteur'){
+          echo '<li class="nav-item">';
+          echo '<a class="nav-link" href="/~na18a028/view/panier.php">Panier </a>';
+          echo '</li>';
+      }
+      ?>
+      <?php
+      if($_SESSION['userType'] != 'Admin'){
+          echo '<li class="nav-item">';
+          echo '<a class="nav-link" href="/~na18a028/view/contrat.php">Contrats </a>';
+          echo '</li>';
+      }
+      ?>
+      
       <li class="nav-item">
         <form class="form-inline" action="userHome.php" method="post">
             <button class="btn btn-outline-warning" type="submit" name="logout">Log out</button>
@@ -40,38 +51,63 @@
     $dbPassword = 'rWoO38Ra';
     $conn = new PDO($config,$dbuser,$dbPassword);
 
-    $sql = 'SELECT * FROM annonce';
-    $resultset = $conn->prepare($sql);
-    $resultset->execute();
-    $i = 0;
-    while ($row = $resultset->fetch(PDO::FETCH_ASSOC)) {
-        if (($i % 2) == 0){
-            echo '<div class="row">';
-        }
-        echo '<div class="col-sm-6">';
-        echo '<div class="card">';
-        echo '<img class="card-img-top" height="450px" width="450px" src="'.$row['photographie'].'" alt="Card image cap">';
-        echo '<div class="card-body">';
-        echo '<h5 class="card-title">'.$row['titre']."      ".$row['prix'].'€</h5>';
-        echo '<p class="card-text">'.'Vendeur: '.$row['loginvendeur'].'<br />'.$row['description'].'</p>';
-        echo '<a class="btn btn-primary" href="#" role="button">Acheter</a>';
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
-        $i = $i + 1;
-        if (($i % 2) == 0){
+    if($_SESSION['userType'] == 'Acheteur'){
+        $sql = 'SELECT * FROM annonce';
+        $resultset = $conn->prepare($sql);
+        $resultset->execute();
+        $i = 0;
+        while ($row = $resultset->fetch(PDO::FETCH_ASSOC)) {
+            if (($i % 2) == 0){
+                echo '<div class="row">';
+            }
+            echo '<div class="col-sm-6">';
+            echo '<div class="card">';
+            echo '<img class="card-img-top" height="450px" width="450px" src="'.$row['photographie'].'" alt="Card image cap">';
+            echo '<div class="card-body">';
+            echo '<h5 class="card-title">'.$row['titre']."      ".$row['prix'].'€</h5>';
+            echo '<p class="card-text">'.'Vendeur: '.$row['loginvendeur'].'<br />'.$row['description'].'</p>';
+            echo '<a class="btn btn-primary" href="#" role="button">Acheter</a>';
             echo '</div>';
+            echo '</div>';
+            echo '</div>';
+            $i = $i + 1;
+            if (($i % 2) == 0){
+                echo '</div>';
+            }
         }
+        $conn = null;
+    } else if ($_SESSION['userType'] == 'Vendeur') {
+        echo '<a class="btn btn-success" href="#" role="button">Créer une annonce ! </a><br />';
+        echo '<h5>Vos Annonces: </h5>';
+        $sql = 'SELECT * FROM annonce WHERE loginvendeur=\''.$_SESSION['login'].'\'';
+        $resultset = $conn->prepare($sql);
+        $resultset->execute();
+        $i = 0;
+        while ($row = $resultset->fetch(PDO::FETCH_ASSOC)) {
+            if (($i % 2) == 0){
+                echo '<div class="row">';
+            }
+            echo '<div class="col-sm-6">';
+            echo '<div class="card">';
+            echo '<img class="card-img-top" height="450px" width="450px" src="'.$row['photographie'].'" alt="Card image cap">';
+            echo '<div class="card-body">';
+            echo '<h5 class="card-title">'.$row['titre']."      ".$row['prix'].'€</h5>';
+            echo '<p class="card-text">'.'Vendeur: '.$row['loginvendeur'].'<br />'.$row['description'].'</p>';
+            echo '<a class="btn btn-primary" href="#" role="button">Modifier</a>';
+            echo '</div>';
+            echo '</div>';
+            echo '</div>';
+            $i = $i + 1;
+            if (($i % 2) == 0){
+                echo '</div>';
+            }
+        }
+        $conn = null;
+    } else {
+        echo "<h5>On va créer ce page pour afficher les rubrique que ce Admin a créé</h5>";
     }
-    $conn = null;
     ?>
 </div>
-
-<footer class="footer">
-   <div class="text-center fixed-bottom">
-      <span class="text-muted">Created by LIU Jijie, BERGERON Célien, CECCHIN Valentin</span>
-   </div>
-</footer>
 
 <?php
 if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['logout'])){

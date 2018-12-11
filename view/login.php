@@ -66,11 +66,5 @@ if($_SESSION != NULL) {
     </form>
 </div>
 
-<footer class="footer">
-   <div class="text-center fixed-bottom">
-      <span class="text-muted">Created by LIU Jijie, BERGERON Célien, CECCHIN Valentin</span>
-   </div>
-</footer>
-
 </body>
 </html>
