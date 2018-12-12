@@ -13,11 +13,17 @@ if($_SESSION['userType'] != 'Admin') {
     $sql = 'UPDATE '.$_SESSION['userType'].' SET nom=\''.$_POST['nom'].'\', prenom=\''.$_POST['prenom'].'\', motdepasse=\''.$_POST['password'].'\', adressemail=\''.$_POST['email'].'\', adresse=\''.$_POST['adresse'].'\' WHERE login=\''.$_SESSION['login'].'\'';
 }
 
+$userType = $_SESSION['userType'];
+$login = $_SESSION['login'];
+
 $resultset = $conn->prepare($sql);
 var_dump($resultset);
 $exe = $resultset->execute();
 
 if($exe){
+    session_unset();
+    $_SESSION['userType'] = $userType;
+    $_SESSION['login'] = $login;
     $_SESSION['password'] = $_POST['password'];
     $_SESSION['nom'] = $_POST['nom'];
     $_SESSION['prenom'] = $_POST['prenom'];

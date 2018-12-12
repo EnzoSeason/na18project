@@ -20,6 +20,14 @@ if($_SESSION != NULL) {
 </nav>
 <br />
 <div class="container" style="margin-top:30px">
+
+    <?php
+    if(isset($_SESSION['error'])){
+        session_unset();
+        echo'<p style="color:red;">Login ou Mot de passes n\'est pas correct.</p>';
+    }
+    ?>
+
     <form action="/~na18a028/controller/loginController.php" method="POST"> 
     
     <fieldset class="form-group">

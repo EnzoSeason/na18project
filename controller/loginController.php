@@ -20,6 +20,7 @@ $resultset->execute();
 $row = $resultset->fetch(PDO::FETCH_ASSOC);
 //var_dump($resultset);
 if($row != TRUE){
+    $_SESSION['error'] = 1;
     $conn = NULL;
     header('Location: /~na18a028/index.html');
 } else {

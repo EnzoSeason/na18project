@@ -32,7 +32,7 @@
     <?php
     if(isset($_SESSION['userExist'])){
         session_unset();
-        echo'<p style="color:red;">Login ou Email a déjà existé. Verifiez les informations bancaires si vous avez besoin d\'un compte d\'Acheteur ou Vendeur.</p>';
+        echo'<p style="color:red;">Email a déjà existé. Verifiez les informations bancaires si vous avez besoin d\'un compte d\'Acheteur ou Vendeur.</p>';
     }
     ?>
     <form action="/~na18a028/controller/updateUserController.php" method="POST"> 
