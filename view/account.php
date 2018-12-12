@@ -82,7 +82,7 @@
         <label for="Email" class="col-sm-2 col-form-label">Email</label>
         <div class="col-sm-10">
         <?php 
-        echo '<input type="email" class="form-control" id="Email" name="email" placeholder="Email" value="'.$_SESSION['adressemail'].'"required>';
+        echo '<input type="email" class="form-control" id="Email" name="email" placeholder="Email" value="'.$_SESSION['email'].'"required>';
         ?>
         </div>
     </div>

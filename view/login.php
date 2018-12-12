@@ -1,6 +1,6 @@
 <?php 
 session_start();
-if($_SESSION != NULL) {
+if(($_SESSION != NULL) && !isset($_SESSION['error'])) {
     header('Location: /~na18a028/view/userHome.php');
 }
 ?>

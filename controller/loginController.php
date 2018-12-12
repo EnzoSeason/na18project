@@ -15,14 +15,14 @@ if($_POST['userType'] == 'Acheteur'){
 
 }
 $resultset = $conn->prepare($sql);
-$resultset->execute();
+$exe = $resultset->execute();
 
 $row = $resultset->fetch(PDO::FETCH_ASSOC);
-//var_dump($resultset);
-if($row != TRUE){
+//var_dump($row);
+if(!$row){
     $_SESSION['error'] = 1;
     $conn = NULL;
-    header('Location: /~na18a028/index.html');
+    header('Location: /~na18a028/view/login.php');
 } else {
     session_unset();
     //var_dump($row);
@@ -31,7 +31,7 @@ if($row != TRUE){
     $_SESSION['password'] = $_POST['password'];
     $_SESSION['nom'] = $row['nom'];
     $_SESSION['prenom'] = $row['prenom'];
-    $_SESSION['adressemail'] = $row['adressemail'];
+    $_SESSION['email'] = $row['adressemail'];
     if(isset($row['adresse'])){
         $_SESSION['adresse'] = $row['adresse'];
     }

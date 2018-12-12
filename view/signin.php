@@ -16,9 +16,15 @@
 
 <div class="container" style="margin-top:30px">
     <?php
-    if(isset($_SESSION['userExist'])){
+    if(isset($_SESSION['error'])){
+        if($_SESSION['error'] == 1){
+            echo'<p style="color:red;">Login ou Email a déjà existé.</p>';
+        } else if ($_SESSION['error'] == 2) {
+            echo'<p style="color:red;">Verifiez les informations bancaires si vous avez besoin d\'un compte d\'Acheteur ou Vendeur.</p>';
+        } else {
+            echo'<p style="color:red;">Système erreur</p>';
+        }
         session_unset();
-        echo'<p style="color:red;">Login ou Email a déjà existé. Verifiez les informations bancaires si vous avez besoin d\'un compte d\'Acheteur ou Vendeur.</p>';
     }
     ?>
     <form action="/~na18a028/controller/signinController.php" method="POST"> 
