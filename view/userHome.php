@@ -19,12 +19,17 @@
     <ul class="navbar-nav ml-auto">
       <li class="nav-item active">
         <a class="nav-link" href="/~na18a028/view/account.php">
-            Bonjour <?php echo $_SESSION['userType']. ' ' . $_SESSION['nom']; ?><span class="sr-only">(current)</span></a>
+            <?php 
+            echo 'Bonjour '.$_SESSION['userType']. ' ' . $_SESSION['nom']; 
+            ?><span class="sr-only">(current)</span></a>
       </li>
       <?php
       if($_SESSION['userType'] == 'Acheteur'){
           echo '<li class="nav-item">';
-          echo '<a class="nav-link" href="/~na18a028/view/panier.php">Panier </a>';
+          echo '<a class="nav-link" href="/~na18a028/view/panier.php">
+          <span>Panier + </span> 
+          <span id="nav-cart-count" aria-hidden="true">'.$_SESSION['nbAnnoncePanier'].'</span>
+          </a>';
           echo '</li>';
       }
       ?>
@@ -37,14 +42,14 @@
       ?>
       
       <li class="nav-item">
-        <form class="form-inline" action="userHome.php" method="post">
+        <form class="form-inline" action="/~na18a028/controller/logoutController.php" method="post">
             <button class="btn btn-outline-warning" type="submit" name="logout">Log out</button>
         </form>
       </li>
     </ul>
   </div>
 </nav>
-<div class="container" style="margin-top:30px">
+<div id="home" class="container" style="margin-top:30px">
     <?php
     $config = 'pgsql:host=tuxa.sme.utc;port=5432;dbname=dbna18a028';
     $dbuser = 'na18a028';
@@ -57,63 +62,72 @@
         $resultset->execute();
         $i = 0;
         while ($row = $resultset->fetch(PDO::FETCH_ASSOC)) {
-            if (($i % 2) == 0){
-                echo '<div class="row">';
+            if (($i % 3) == 0){
+                echo '<div class="row" style="margin-top:20px">';
             }
-            echo '<div class="col-sm-6">';
-            echo '<div class="card">';
-            echo '<img class="card-img-top" height="450px" width="450px" src="'.$row['photographie'].'" alt="Card image cap">';
+            echo '<div class="col-sm-4">';
+            echo '<div class="card" style="height: 450px;">';
+            echo '<img class="card-img-top" height="300px" width="300px" src="'.$row['photographie'].'" alt="Card image cap">';
             echo '<div class="card-body">';
             echo '<h5 class="card-title">'.$row['titre']."      ".$row['prix'].'€</h5>';
-            echo '<p class="card-text">'.'Vendeur: '.$row['loginvendeur'].'<br />'.$row['description'].'</p>';
-            echo '<a class="btn btn-primary" href="#" role="button">Acheter</a>';
+            echo '<p class="card-text">'.'Vendeur: '.$row['loginvendeur'].'</p>';
+            echo '<form class="form-inline" action="/~na18a028/controller/ajouterAuPanierController.php" method="post">
+            <button class="btn btn-outline-primary" type="submit" name="ajouterAuPanier" value="'.$row['loginvendeur'].'_'.$row['titre'].'">Ajouter au panier</button>
+            </form>';
             echo '</div>';
             echo '</div>';
             echo '</div>';
             $i = $i + 1;
-            if (($i % 2) == 0){
+            if (($i % 3) == 0){
                 echo '</div>';
             }
         }
         $conn = null;
     } else if ($_SESSION['userType'] == 'Vendeur') {
+        echo '<div id="line"><div class="row">';
+        echo '<div class="col-sm-9">';
+        echo '<h4>Vos Annonces: </h4>';
+        echo '</div>';
+        echo '<div class="col-sm-3">';
         echo '<a class="btn btn-success" href="#" role="button">Créer une annonce ! </a><br />';
-        echo '<h5>Vos Annonces: </h5>';
+        echo '</div>';
+        echo '</div></div>';
         $sql = 'SELECT * FROM annonce WHERE loginvendeur=\''.$_SESSION['login'].'\'';
         $resultset = $conn->prepare($sql);
         $resultset->execute();
-        $i = 0;
+        
+        echo '<div id="annonceList">';
         while ($row = $resultset->fetch(PDO::FETCH_ASSOC)) {
-            if (($i % 2) == 0){
-                echo '<div class="row">';
-            }
-            echo '<div class="col-sm-6">';
-            echo '<div class="card">';
-            echo '<img class="card-img-top" height="450px" width="450px" src="'.$row['photographie'].'" alt="Card image cap">';
-            echo '<div class="card-body">';
-            echo '<h5 class="card-title">'.$row['titre']."      ".$row['prix'].'€</h5>';
-            echo '<p class="card-text">'.'Vendeur: '.$row['loginvendeur'].'<br />'.$row['description'].'</p>';
-            echo '<a class="btn btn-primary" href="#" role="button">Modifier</a>';
-            echo '</div>';
-            echo '</div>';
-            echo '</div>';
-            $i = $i + 1;
-            if (($i % 2) == 0){
-                echo '</div>';
-            }
-        }
+            ?>
+        <hr />
+        <div class="row" style="height: 225px;">
+            <div class="col-sm-3">
+            <?php echo '<img height="150px" width="150px" src="'.$row['photographie'].'" alt="image cap">'; ?>
+            </div>
+            <div class="col-sm-6">
+            <?php 
+            echo '<h5>'.$row['titre'].'</h5>';
+            echo '<p>'.$row['description'].'</p>';
+            echo '<div style="margin-bottom:10px"><span>'.'Vendeur: '.$row['loginvendeur'].'</span></div>';
+            echo '<form class="form-inline" action="/~na18a028/controller/modifierAnnonceController.php" method="post">
+            <button class="btn btn-outline-primary" type="submit" name="modifierAnnonce" value="'.$row['loginvendeur'].'_'.$row['titre'].'">Modifier</button>
+            </form>';
+            ?>
+            </div>
+            <div class="col-sm-3">
+            <?php
+            echo '<h6 style="color:red;">EUR '.$row['prix'].'</h6>';
+            ?>
+            </div>
+        </div>
+        <?php }
+        echo '</div>';
         $conn = null;
-    } else {
+    } else { //Admin
         echo "<h5>On va créer ce page pour afficher les rubrique que ce Admin a créé</h5>";
     }
     ?>
 </div>
 
-<?php
-if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['logout'])){
-    session_unset();
-    header('Location: /~na18a028/index.html'); 
-}
-?>
 </body>
 </html>

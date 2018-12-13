@@ -44,6 +44,13 @@ if(!$row){
     if(isset($row['cryptocarte'])){
         $_SESSION['cryptocarte'] = $row['cryptocarte'];
     }
+    if ($_POST['userType'] == 'Acheteur'){
+        $sql = 'SELECT quantité FROM panier WHERE loginacheteur=\''.$_POST['login'].'\'';
+        $resultset = $conn->prepare($sql);
+        $exe = $resultset->execute();
+        $row = $resultset->fetch(PDO::FETCH_ASSOC);
+        $_SESSION['nbAnnoncePanier'] = $row['quantité'];
+    }
     $conn = NULL;
     header('Location: /~na18a028/view/userHome.php');
 }
