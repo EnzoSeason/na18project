@@ -5,7 +5,7 @@ $annonce = split("_", $_POST['ajouterAuPanier']);
 $loginVendeur = $annonce[0];
 $titreAnnonce = $annonce[1];
 $today = getdate();
-$dateToday = $today['year'].'-'.$today['mon'].'-'.$today['mday'];
+$dateToday = $today['year'].'-'.$today['mon'].'-'.$today['mday'].' '.$today['hours'].':'.$today['minutes'].":".$today['seconds'];
 
 $config = 'pgsql:host=tuxa.sme.utc;port=5432;dbname=dbna18a028';
 $dbuser = 'na18a028';
@@ -30,7 +30,7 @@ if(!$row){
     $row = $resultset->fetch(PDO::FETCH_ASSOC);
     $_SESSION['nbAnnoncePanier'] = $row['quantité'];
 
-    $sql='INSERT INTO contrat (loginVendeur, annonceTitre, loginAcheteur, dateAjout, quantité, expeditionType, expeditionCout, paiement) VALUES (\''.$loginVendeur.'\', \''.$titreAnnonce.'\', \''.$_SESSION['login'].'\', \''.$dateToday.'\', '.'1, \'Colissimo\', 0, FALSE)';
+    $sql='INSERT INTO contrat (loginVendeur, annonceTitre, loginAcheteur, dateAjout, quantité, expeditionType, expeditionCout, paiement, adresse) VALUES (\''.$loginVendeur.'\', \''.$titreAnnonce.'\', \''.$_SESSION['login'].'\', \''.$dateToday.'\', '.'1, \'Colissimo\', 0, FALSE, \'\')';
     $resultset = $conn->prepare($sql);
     var_dump($resultset);
     $exe = $resultset->execute();
@@ -38,6 +38,7 @@ if(!$row){
         $conn = null;
         header('Location: /~na18a028/view/userHome.php');
     } else{
+        $conn = null;
         echo 'error in adding product to panier';
     }
 } else {

@@ -36,7 +36,7 @@
         $dbPassword = 'rWoO38Ra';
         $conn = new PDO($config,$dbuser,$dbPassword);
 
-        $sql = 'select * from contrat, annonce where contrat.loginvendeur=annonce.loginvendeur and contrat.annoncetitre = annonce.titre and loginacheteur=\''.$_SESSION['login'].'\' AND paiement=FALSE';
+        $sql = 'select * from contrat, annonce where contrat.loginvendeur=annonce.loginvendeur and contrat.annoncetitre = annonce.titre and loginacheteur=\''.$_SESSION['login'].'\' AND paiement=FALSE ORDER BY dateajout DESC';
         $resultset = $conn->prepare($sql);
         $resultset->execute();
         while ($row = $resultset->fetch(PDO::FETCH_ASSOC)) {
@@ -52,7 +52,7 @@
         echo '<p>'.$row['description'].'</p>';
         echo '<span>'.'Vendeur: '.$row['loginvendeur'].'</span>';
         echo '<div style="margin-top:10px"><div class="row"><div class="col-sm-2">';
-        echo '<form class="form-inline" action="/~na18a028/controller/acheterController.php" method="post">
+        echo '<form class="form-inline" action="/~na18a028/view/acheter.php" method="post">
         <button class="btn btn-outline-primary" type="submit" name="acheter" value="'.$row['loginvendeur'].'_'.$row['titre'].'">Acheter</button>
         </form>';
         echo '</div>';
@@ -69,7 +69,9 @@
         ?>
         </div>
     </div>
-    <?php } ?>
+    <?php } 
+    $conn = null; 
+    ?>
 </div>
 
 </body>

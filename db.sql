@@ -52,7 +52,8 @@ annonceTitre VARCHAR(100),
 FOREIGN KEY (loginVendeur, annonceTitre) REFERENCES Annonce(loginVendeur, titre),
 loginAcheteur VARCHAR(20),
 FOREIGN KEY (loginAcheteur) REFERENCES Panier(loginAcheteur),
-dateAjout DATE NOT NULL,
+adresse VARCHAR,
+dateAjout timestamp NOT NULL,
 quantité INTEGER NOT NULL,
 expeditionType expeditionTypeContrat,
 expeditionCout FLOAT,
@@ -119,17 +120,6 @@ INSERT INTO Panier (loginAcheteur, quantité)
 VALUES ('DupuisJe', 1);
 INSERT INTO Panier (loginAcheteur, quantité)
 VALUES ('AlmorSt', 2);
-
-INSERT INTO Contrat (loginVendeur, annonceTitre, loginAcheteur, dateAjout, quantité, expeditionType, expeditionCout, paiement)
-VALUES ('LaurentMo', 'Appareil photo', 'MarinLu', '2018-10-02', 1, 'Colissimo', 10.00, TRUE);
-INSERT INTO Contrat (loginVendeur, annonceTitre, loginAcheteur, dateAjout, quantité, expeditionType, expeditionCout, paiement)
-VALUES ('PoulpeCa', 'CD', 'MarinLu', '2018-06-24', 3, 'Colissimo', 3.00, TRUE);
-INSERT INTO Contrat (loginVendeur, annonceTitre, loginAcheteur, dateAjout, quantité, expeditionType, expeditionCout, paiement)
-VALUES ('PoulpeCa', 'CD', 'DupuisJe', '2017-05-26', 5, 'Retrait', 0, FALSE);
-INSERT INTO Contrat (loginVendeur, annonceTitre, loginAcheteur, dateAjout, quantité, expeditionType, expeditionCout, paiement)
-VALUES ('LaurentMo', 'Frigo', 'AlmorSt', '2018-12-05', 1, 'TNT', 20.00, TRUE);
-INSERT INTO Contrat (loginVendeur, annonceTitre, loginAcheteur, dateAjout, quantité, expeditionType, expeditionCout, paiement)
-VALUES ('PoulpeCa', 'CD', 'AlmorSt', '2018-03-16', 2, 'Colissimo', 1.50, TRUE);
 
 INSERT INTO Notation (loginVendeur, loginAcheteur, score, avis, dateAvis)
 VALUES ('LaurentMo', 'MarinLu', 18, 'Vendeur très gentil, rapide à répondre', '2018-10-04');

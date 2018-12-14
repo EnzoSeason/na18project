@@ -126,6 +126,7 @@
     } else { //Admin
         echo "<h5>On va créer ce page pour afficher les rubrique que ce Admin a créé</h5>";
     }
+    $conn = null;
     ?>
 </div>
 

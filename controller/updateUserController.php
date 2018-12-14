@@ -40,7 +40,7 @@ if($exe){
     if(isset($_POST['cryptocarte'])){
         $_SESSION['cryptocarte'] = $_POST['cryptocarte'];
     }
-    $conn = NULL;
+    $conn = null;
     header('Location: /~na18a028/view/userHome.php');
 } else {
     $_SESSION['userExist'] = 1;
