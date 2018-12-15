@@ -84,12 +84,16 @@
         }
         $conn = null;
     } else if ($_SESSION['userType'] == 'Vendeur') {
+        if(isset($_SESSION['supprimerAnnonceError']) && $_SESSION['supprimerAnnonceError'] == 1){
+            $_SESSION['supprimerAnnonceError'] = 0;
+            echo '<p style="color:red;">Il y a des clients qui ont achetés ce produit, pour instance, vous ne pouvez pas le modifier.</p>';
+        }
         echo '<div id="line"><div class="row">';
         echo '<div class="col-sm-9">';
         echo '<h4>Vos Annonces: </h4>';
         echo '</div>';
         echo '<div class="col-sm-3">';
-        echo '<a class="btn btn-success" href="#" role="button">Créer une annonce ! </a><br />';
+        echo '<a class="btn btn-success" href="/~na18a028/view/createAnnonce.php" role="button">Créer une annonce ! </a><br />';
         echo '</div>';
         echo '</div></div>';
         $sql = 'SELECT * FROM annonce WHERE loginvendeur=\''.$_SESSION['login'].'\'';
@@ -109,9 +113,16 @@
             echo '<h5>'.$row['titre'].'</h5>';
             echo '<p>'.$row['description'].'</p>';
             echo '<div style="margin-bottom:10px"><span>'.'Vendeur: '.$row['loginvendeur'].'</span></div>';
-            echo '<form class="form-inline" action="/~na18a028/controller/modifierAnnonceController.php" method="post">
-            <button class="btn btn-outline-primary" type="submit" name="modifierAnnonce" value="'.$row['loginvendeur'].'_'.$row['titre'].'">Modifier</button>
+            echo '<div style="margin-top:10px"><div class="row"><div class="col-sm-2">';
+            echo '<form class="form-inline" action="/~na18a028/view/modifierAnnonce.php" method="post">
+            <button class="btn btn-outline-primary" type="submit" name="modifierAnnonce" value="'.$row['titre'].'">Modifier</button>
             </form>';
+            echo '</div>';
+            echo '<div class="col-sm-2">';
+            echo '<form action="/~na18a028/controller/supprimerAnnonceController.php" method="post">
+            <button class="btn btn-outline-danger" type="submit" name="supprimerAnnonce" value="'.$row['titre'].'">Supprimer</button>
+            </form>';
+            echo '</div></div></div>';
             ?>
             </div>
             <div class="col-sm-3">

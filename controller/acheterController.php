@@ -4,6 +4,7 @@ var_dump($_SESSION);var_dump($_POST);
 $annonce = split("_", $_POST['payer']);
 $loginVendeur = $annonce[0];
 $titreAnnonce = $annonce[1];
+$buytime = $annonce[2];
 
 $today = getdate();
 $dateToday = $today['year'].'-'.$today['mon'].'-'.$today['mday'].' '.$today['hours'].':'.$today['minutes'].":".$today['seconds'];
@@ -13,7 +14,7 @@ $dbuser = 'na18a028';
 $dbPassword = 'rWoO38Ra';
 $conn = new PDO($config,$dbuser,$dbPassword);
 
-$sql = 'UPDATE contrat SET adresse=\''.$_POST['adresse'].'\', quantité='.$_POST['quantité'].', dateajout=\''.$dateToday.'\', expeditiontype=\''.$_POST['expeditiontype'].'\', expeditioncout='.$_POST['expeditioncout'].', paiement=TRUE where loginacheteur=\''.$_SESSION['login'].'\' AND loginvendeur=\''.$loginVendeur.'\' AND annoncetitre=\''.$titreAnnonce.'\'';
+$sql = 'UPDATE contrat SET adresse=\''.$_POST['adresse'].'\', quantité='.$_POST['quantité'].', dateajout=\''.$dateToday.'\', expeditiontype=\''.$_POST['expeditiontype'].'\', expeditioncout='.$_POST['expeditioncout'].', paiement=TRUE where loginacheteur=\''.$_SESSION['login'].'\' AND loginvendeur=\''.$loginVendeur.'\' AND annoncetitre=\''.$titreAnnonce.'\' AND dateajout=\''.$buytime.'\'';
 
 $resultset = $conn->prepare($sql);
 $exe = $resultset->execute();

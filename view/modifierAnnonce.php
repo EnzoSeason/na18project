@@ -1,11 +1,11 @@
 <?php session_start();
-//var_dump($_SESSION);var_dump($_POST);
+//var_dump($_SESSION);
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Création d'annonce</title>
+    <title>Modification d'annonce</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -29,34 +29,54 @@
     </ul>
   </div>
 </nav>
-
-
 <div class="container" style="margin-top:30px">
 <?php
-if(isset($_SESSION['createAnnonceError']) && $_SESSION['createAnnonceError'] == 1){
-    $_SESSION['createAnnonceError'] = 0;
-    echo '<p style="color:red;">Cette annoonce a déjà exité.</p>';
-}
+
+if(isset($_SESSION['modifierAnnonceError']) && $_SESSION['modifierAnnonceError'] != 0){
+    if($_SESSION['modifierAnnonceError'] == 1){
+        $titre = $_SESSION['modifierAnnonceTitre'];
+        $_SESSION['modifierAnnonceError'] = 0;
+        echo '<p style="color:red;">Verifier votre photographie, il doit être en  JPG/JPEG/PNG/GIF et moins de 5MB.</p>';       
+    } else {
+        $titre = $_SESSION['modifierAnnonceTitre'];
+        $_SESSION['modifierAnnonceError'] = 0;
+        echo '<p style="color:red;">Il y a des clients qui ont achetés ce produit, pour instance, vous ne pouvez pas le modifier.</p>';
+    }
+ } else {
+     $titre = $_POST['modifierAnnonce'];
+ }
+
+$config = 'pgsql:host=tuxa.sme.utc;port=5432;dbname=dbna18a028';
+$dbuser = 'na18a028';
+$dbPassword = 'rWoO38Ra';
+$conn = new PDO($config,$dbuser,$dbPassword);
+
+$sql = 'SELECT * FROM annonce WHERE loginvendeur=\''.$_SESSION['login'].'\' AND titre = \''.$titre.'\'';
+$resultset = $conn->prepare($sql);
+$exe = $resultset->execute();
+$row = $resultset->fetch(PDO::FETCH_ASSOC);
+//var_dump($row);
+$conn = null;
 ?>
-<form action="/~na18a028/controller/createAnnonceController.php" method="POST" enctype="multipart/form-data"> 
+<form action="/~na18a028/controller/modifierAnnonceController.php" method="POST" enctype="multipart/form-data"> 
     <div class="form-group row">
         <div class="col">
             <label for="titre" class="col-form-label">Titre: </label>
-            <input type="text" class="form-control" id="titre" name="titre" placeholder="titre" required>
+            <input readonly type="text" class="form-control-plaintext" id="titre" name="titre" placeholder="titre" <?php echo 'value=\''.$titre.'\'';?>>
         </div>
         <div class="col">
             <label for="tag" class="col-form-label">Tag: </label>
-            <input type="text" class="form-control" id="tag" name="tag" placeholder="tag">
+            <input type="text" class="form-control" id="tag" name="tag" placeholder="tag" <?php echo 'value=\''.$row['tag'].'\'';?>>
         </div>
         <div class="col">
             <label for="prix" class="col-form-label">Prix: </label>
-            <input type="text" class="form-control" id="prix" name="prix" pattern="\d+" required>
+            <input type="text" class="form-control" id="prix" name="prix" <?php echo 'value=\''.$row['prix'].'\'';?> required>
         </div>          
     </div>
 
     <div class="form-group row">
         <label for="description">Description: </label>
-        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+        <textarea class="form-control" id="description" name="description" rows="3"><?php echo $row['description'];?></textarea>
     </div>
 
     <div class="form-group row">
@@ -66,11 +86,10 @@ if(isset($_SESSION['createAnnonceError']) && $_SESSION['createAnnonceError'] == 
 
     <div class="form-group row">
         <div class="col-sm-10">
-        <button type="submit" class="btn btn-primary" name="submit">Créer l'annonce</button>
+        <button type="submit" class="btn btn-primary" name="submit" <?php echo 'value=\''.$titre.'\'';?>>Modifier l'annonce</button>
         </div>
     </div>
 </form>
-</div>
     
 </body>
 </html>

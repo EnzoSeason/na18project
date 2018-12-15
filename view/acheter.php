@@ -7,6 +7,15 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script>
+        function quantite(price,quantite){
+            document.getElementById('total').innerHTML = (price * quantite).toFixed(2);
+        }
+        function expCout(){
+            var cout = document.getElementById("expeditionCout").value;
+            document.getElementById('plus').innerHTML =' + '+ cout + '.00';
+        }
+    </script>
 </head>
 <body>
 <?php session_start(); 
@@ -67,7 +76,7 @@ $row = $resultset->fetch(PDO::FETCH_ASSOC);
             echo '</div>';
             echo '<div class="col-sm-4">';
             echo '<label for="expeditionCout" class="col-form-label">Expedition Vitesse</label>';
-            echo '<select class="form-control" id="expeditionCout" name="expeditioncout">';
+            echo '<select class="form-control" id="expeditionCout" name="expeditioncout" onChange="expCout()">';
             echo '<option value="0">normale + 0€</option>';
             echo '<option value="3">vite + 3€</option>';
             echo '<option value="5">très vite + 5€</option>';
@@ -79,7 +88,7 @@ $row = $resultset->fetch(PDO::FETCH_ASSOC);
             <?php
             echo '<h6 style="color:red;">EUR '.$row['prix'].'</h6>';
             echo '<label for="quantité" class="col-form-label">Quantité</label>';
-            echo '<input style="width:50px;" type="text" class="form-control" id="quantité" name="quantité" placeholder="1" value="1", pattern="\d+" required>';
+            echo '<input style="width:50px;" type="text" class="form-control" id="quantité" name="quantité" placeholder="0" pattern="\d+" onkeyup="quantite('.$row['prix'].', this.value)" required>';
             ?>
         </div>
     </div>
@@ -122,11 +131,14 @@ $row = $resultset->fetch(PDO::FETCH_ASSOC);
         </div>
     </div>
     <div class="row" id='pay' style="margin-top:30px;margin-bottom:50px;">
-        <div class="col-sm-10">
+        <div class="col-sm-9">
         <?php
-        echo '<button class="btn btn-outline-primary" type="submit" name="payer" value="'.$row['loginvendeur'].'_'.$row['annoncetitre'].'">Payer</button>';
+        echo '<button class="btn btn-outline-primary" type="submit" name="payer" value="'.$row['loginvendeur'].'_'.$row['annoncetitre'].'_'.$row['dateajout'].'">Payer</button>';
         $conn = null;
         ?>
+        </div>
+        <div class="col-sm-3">
+            <h5 style="color:red;">Total: EUR <span id='total'>0.00</span><span id='plus'> + 0.00</span></h5>
         </div>
     </div>
 </form>

@@ -41,7 +41,7 @@
         <label for="Login" class="col-sm-2 col-form-label">Login</label>
         <div class="col-sm-10">
         <?php 
-        echo '<input readonly type="text" class="form-control" id="Login" name="login" placeholder="Login" value="'.$_SESSION['login'].'" required>';
+        echo '<input readonly type="text" class="form-control-plaintext" id="Login" name="login" placeholder="Login" value="'.$_SESSION['login'].'" required>';
         ?>
         </div>
     </div>

@@ -1,22 +1,26 @@
 <?php session_start();
-var_dump($_SESSION);var_dump($_POST);
+//var_dump($_SESSION);
+//var_dump($_POST);
+//var_dump($_FILES);
+
+//check si la nouvelle annonce est dans la BDD
 $config = 'pgsql:host=tuxa.sme.utc;port=5432;dbname=dbna18a028';
 $dbuser = 'na18a028';
 $dbPassword = 'rWoO38Ra';
 $conn = new PDO($config,$dbuser,$dbPassword);
 
-//check if this annonce is in the contrat. Yes, we can't change it.
-$sql0 = 'SELECT * FROM contrat WHERE loginvendeur=\''.$_SESSION['login'].'\' AND annoncetitre=\''.$_POST['submit'].'\' AND paiement=TRUE';
+$sql0 = 'SELECT * FROM annonce WHERE loginvendeur=\''.$_SESSION['login'].'\' AND titre=\''.$_POST['titre'].'\'';
 $resultset = $conn->prepare($sql0);
 $exe = $resultset->execute();
 $row = $resultset->fetch(PDO::FETCH_ASSOC);
+var_dump($row);
+
 if ($row){
-    $_SESSION['modifierAnnonceError'] = 2;
-    $_SESSION['modifierAnnonceTitre']= $_POST['submit'];
     $conn = null;
-    //var_dump($resultset);
-    header('Location: /~na18a028/view/modifierAnnonce.php'); 
+    $_SESSION['createAnnonceError'] = 1;
+    header('Location: /~na18a028/view/createAnnonce.php');
 } else {
+    //upload image to server
     $target_dir = "/volsme/user1x/users/na18a028/public_html/image/";
     $target_file = $target_dir . basename($_FILES["photographie"]["name"]);
     $uploadOk = 1;
@@ -51,28 +55,25 @@ if ($row){
     } else {
         if (move_uploaded_file($_FILES["photographie"]["tmp_name"], $target_file)) {
             echo "The file ". basename( $_FILES["photographie"]["name"]). " has been uploaded.";
+            $photo_url = 'http://tuxa.sme.utc/~na18a028/image/'. basename($_FILES["photographie"]["name"]);
+            $sql = 'INSERT INTO annonce (loginvendeur, titre, description, prix,tag, photographie) VALUES (\''.$_SESSION['login'].'\', \''.$_POST['titre'].'\', \''.$_POST['description'].'\', '.$_POST['prix'].', \''.$_POST['tag'].'\',\''.$photo_url.'\')';
+            $resultset = $conn->prepare($sql);
+            $exe = $resultset->execute();
+            if($exe){
+                $conn = null;
+                header('Location: /~na18a028/view/userHome.php');
+            } else{
+                $conn = null;
+                var_dump($resultset);
+                echo 'error insert';
+            }
         } else {
+            $conn = null;
             echo "Sorry, there was an error uploading your file.";
         }
     }
-
-    if($uploadOk == 0){
-        $_SESSION['modifierAnnonceError'] = 1;
-        $_SESSION['modifierAnnonceTitre'] = $_POST['submit'];
-        $conn = null;
-        header('Location: /~na18a028/view/modifierAnnonce.php');
-    } else {
-        $photo_url = 'http://tuxa.sme.utc/~na18a028/image/'. basename($_FILES["photographie"]["name"]);
-        $sql = 'UPDATE annonce SET description=\''.$_POST['description'].'\', photographie=\''.$photo_url.'\', prix='.$_POST['prix'].', tag=\''.$_POST['tag'].'\' WHERE loginvendeur=\''.$_SESSION['login'].'\' AND titre=\''.$_POST['submit'].'\'';
-        $resultset = $conn->prepare($sql);
-        $exe = $resultset->execute();
-        if($exe){
-            $conn = null;
-            header('Location: /~na18a028/view/userHome.php');
-        } else {
-            $conn = null;
-            var_dump($resultset);
-        }
-    }
+    
 }
+
+
 ?>
