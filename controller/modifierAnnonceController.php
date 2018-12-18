@@ -72,6 +72,9 @@ if ($row){
         } else {
             $conn = null;
             var_dump($resultset);
+            $_SESSION['modifierAnnonceError'] = 3;
+            $_SESSION['modifierAnnonceTitre'] = $_POST['submit'];
+            header('Location: /~na18a028/view/userHome.php');
         }
     }
 }

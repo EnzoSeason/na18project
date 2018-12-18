@@ -4,8 +4,8 @@ $annonce = split("_", $_POST['ajouterAuPanier']);
 //var_dump($annonce);
 $loginVendeur = $annonce[0];
 $titreAnnonce = $annonce[1];
-$today = getdate();
-$dateToday = $today['year'].'-'.$today['mon'].'-'.$today['mday'].' '.$today['hours'].':'.$today['minutes'].":".$today['seconds'];
+$date = new DateTime("now", new DateTimeZone('Europe/Paris') );
+$dateToday=$date->format('Y-m-d H:i:s');
 
 $config = 'pgsql:host=tuxa.sme.utc;port=5432;dbname=dbna18a028';
 $dbuser = 'na18a028';

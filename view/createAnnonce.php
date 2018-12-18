@@ -42,7 +42,7 @@ if(isset($_SESSION['createAnnonceError']) && $_SESSION['createAnnonceError'] == 
     <div class="form-group row">
         <div class="col">
             <label for="titre" class="col-form-label">Titre: </label>
-            <input type="text" class="form-control" id="titre" name="titre" placeholder="titre" required>
+            <input type="text" class="form-control" id="titre" name="titre" placeholder="Pas de _" pattern="^[^_]+$" required>
         </div>
         <div class="col">
             <label for="tag" class="col-form-label">Tag: </label>

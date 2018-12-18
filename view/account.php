@@ -87,6 +87,8 @@
         </div>
     </div>
 
+    <?php if($_SESSION['userType']!='Admin'){ ?>
+
     <h6>Si vous avez besoin de créer un compte de <span style="color:red;">Vendeur ou Acheteur</span>, Vous devez remplir <span style="color:red;">les informations bancaires</span></h6><br />
 
     <div class="form-group row">
@@ -134,6 +136,8 @@
         </div>
     </div>
     
+    <?php } ?>
+
     <div class="form-group row">
         <div class="col-sm-10">
         <button type="submit" class="btn btn-primary">Mis à jour</button>

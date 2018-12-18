@@ -37,6 +37,10 @@ if(isset($_SESSION['modifierAnnonceError']) && $_SESSION['modifierAnnonceError']
         $titre = $_SESSION['modifierAnnonceTitre'];
         $_SESSION['modifierAnnonceError'] = 0;
         echo '<p style="color:red;">Verifier votre photographie, il doit être en  JPG/JPEG/PNG/GIF et moins de 5MB.</p>';       
+    } else if ($_SESSION['modifierAnnonceError'] == 3){
+        $titre = $_SESSION['modifierAnnonceTitre'];
+        $_SESSION['modifierAnnonceError'] = 0;
+        echo '<p style="color:red;">Verifier votre description, il a déjà existé.</p>';       
     } else {
         $titre = $_SESSION['modifierAnnonceTitre'];
         $_SESSION['modifierAnnonceError'] = 0;
