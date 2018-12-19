@@ -4,14 +4,16 @@ $config = 'pgsql:host=tuxa.sme.utc;port=5432;dbname=dbna18a028';
 $dbuser = 'na18a028';
 $dbPassword = 'rWoO38Ra';
 $conn = new PDO($config,$dbuser,$dbPassword);
+
+$login = str_replace("'","''",$_POST['login']);
 if($_POST['userType'] == 'Acheteur'){
-    $sql = 'SELECT * FROM acheteur WHERE login = \'' . $_POST['login'] . '\' AND motdepasse = \'' . $_POST['password'] . '\'';
+    $sql = 'SELECT * FROM acheteur WHERE login = \'' . $login . '\' AND motdepasse = \'' . $_POST['password'] . '\'';
 
 } else if($_POST['userType'] == 'Vendeur'){
-    $sql = 'SELECT * FROM vendeur WHERE login = \'' . $_POST['login'] . '\' AND motdepasse = \'' . $_POST['password'] . '\'';
+    $sql = 'SELECT * FROM vendeur WHERE login = \'' . $login . '\' AND motdepasse = \'' . $_POST['password'] . '\'';
 
 } else { // Admin
-    $sql = 'SELECT * FROM administrateur WHERE login = \'' . $_POST['login'] . '\' AND motdepasse = \'' . $_POST['password'] . '\'';
+    $sql = 'SELECT * FROM administrateur WHERE login = \'' . $login . '\' AND motdepasse = \'' . $_POST['password'] . '\'';
 
 }
 $resultset = $conn->prepare($sql);
@@ -27,7 +29,7 @@ if(!$row){
     session_unset();
     //var_dump($row);
     $_SESSION['userType'] = $_POST['userType'];
-    $_SESSION['login'] = $_POST['login'];
+    $_SESSION['login'] = $login;
     $_SESSION['password'] = $_POST['password'];
     $_SESSION['nom'] = $row['nom'];
     $_SESSION['prenom'] = $row['prenom'];
@@ -45,7 +47,7 @@ if(!$row){
         $_SESSION['cryptocarte'] = $row['cryptocarte'];
     }
     if ($_POST['userType'] == 'Acheteur'){
-        $sql = 'SELECT quantité FROM panier WHERE loginacheteur=\''.$_POST['login'].'\'';
+        $sql = 'SELECT quantité FROM panier WHERE loginacheteur=\''.$login.'\'';
         $resultset = $conn->prepare($sql);
         $exe = $resultset->execute();
         $row = $resultset->fetch(PDO::FETCH_ASSOC);

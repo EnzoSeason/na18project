@@ -141,7 +141,9 @@
             }
             echo '<div class="col-sm-4">';
             echo '<div class="card" style="height: 450px;">';
+            echo '<a href="/~na18a028/view/annonce.php?loginvendeur='.$row['loginvendeur'].'&annoncetitre='.$row['titre'].'">';
             echo '<img class="card-img-top" height="300px" width="300px" src="'.$row['photographie'].'" alt="Card image cap">';
+            echo '</a>';
             echo '<div class="card-body">';
             echo '<h5 class="card-title">'.$row['titre']."      ".$row['prix'].'€</h5>';
             echo '<p class="card-text">'.'Vendeur: '.$row['loginvendeur'].'</p>';
@@ -228,11 +230,11 @@
         while ($row = $resultset->fetch(PDO::FETCH_ASSOC)) {
             ?>
         <hr />
-        <div class="row" style="height: 200px;">
+        <div class="row">
             <div class="col-sm-3">
                 <?php 
                 echo '<h6>Rubrique:<br /></h6>';
-                echo '<p>'.$row['nom'].'</p>';
+                echo '<p style="color:red;">'.$row['nom'].'</p>';
                 echo '<h6>Type:<br /></h6>';
                 echo '<p>'.$row['type'].'</p>'; 
                 ?>

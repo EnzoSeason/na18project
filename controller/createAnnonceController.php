@@ -56,7 +56,8 @@ if ($row){
         if (move_uploaded_file($_FILES["photographie"]["tmp_name"], $target_file)) {
             echo "The file ". basename( $_FILES["photographie"]["name"]). " has been uploaded.";
             $photo_url = 'http://tuxa.sme.utc/~na18a028/image/'. basename($_FILES["photographie"]["name"]);
-            $sql = 'INSERT INTO annonce (loginvendeur, titre, description, prix,tag, photographie) VALUES (\''.$_SESSION['login'].'\', \''.$_POST['titre'].'\', \''.$_POST['description'].'\', '.$_POST['prix'].', \''.$_POST['tag'].'\',\''.$photo_url.'\')';
+            $description = str_replace("'","''",$_POST['description']);
+            $sql = 'INSERT INTO annonce (loginvendeur, titre, description, prix,tag, photographie) VALUES (\''.$_SESSION['login'].'\', \''.$_POST['titre'].'\', \''.$description.'\', '.$_POST['prix'].', \''.$_POST['tag'].'\',\''.$photo_url.'\')';
             $resultset = $conn->prepare($sql);
             $exe = $resultset->execute();
             if($exe){

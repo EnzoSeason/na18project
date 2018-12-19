@@ -61,13 +61,14 @@ paiement BOOLEAN NOT NULL);
 
 CREATE TABLE Notation (
 loginVendeur VARCHAR(20) NOT NULL,
-FOREIGN KEY (loginVendeur) REFERENCES Vendeur(login),
+annonceTitre VARCHAR NOT NULL,
+FOREIGN KEY (loginVendeur, annonceTitre) REFERENCES Annonce(loginVendeur, titre),
 loginAcheteur VARCHAR(20) NOT NULL,
 FOREIGN KEY (loginAcheteur) REFERENCES Acheteur(login),
 score INTEGER,
 avis VARCHAR,
-dateAvis DATE,
-CHECK (score BETWEEN 0 AND 20));
+dateAvis timestamp,
+CHECK (score BETWEEN 0 AND 5));
 
 CREATE TYPE typeRub AS ENUM ('Selection','Blog','Catégorie');
 CREATE TABLE Rubrique (

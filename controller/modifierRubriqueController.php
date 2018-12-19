@@ -34,7 +34,8 @@ foreach($annonce as $a){
 }
 
 if($exe){
-    $sql2 = 'UPDATE rubrique SET type=\''.$_POST['type'].'\', description=\''.$_POST['description'].'\' WHERE nom=\''.$_POST['nom'].'\'';
+    $description = str_replace("'","''",$_POST['description']);
+    $sql2 = 'UPDATE rubrique SET type=\''.$_POST['type'].'\', description=\''.$description.'\' WHERE nom=\''.$_POST['nom'].'\'';
     $resultset = $conn->prepare($sql2);
     $exe = $resultset->execute();
     if ($exe){

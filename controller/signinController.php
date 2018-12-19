@@ -25,15 +25,19 @@ if($row['login'] != NULL){
     $conn = NULL;
     header('Location: /~na18a028/view/signin.php');
 } 
-
+$login = str_replace("'","''",$_POST['login']);
+$nom = str_replace("'","''",$_POST['nom']);
+$prenom = str_replace("'","''",$_POST['prenom']);
+$email = str_replace("'","''",$_POST['email']);
+$adresse = str_replace("'","''",$_POST['adresse']);
 if($_POST['userType'] == 'Acheteur'){
-    $sql = 'INSERT INTO acheteur (login, nom, prenom, motDePasse, adresseMail, adresse, cooBanqueNum, dateExpiration, cryptoCarte) VALUES (\'' . $_POST['login'] . '\', \''. $_POST['nom'] . '\',\''.$_POST['prenom']. '\', \''. $_POST['password'].'\', \''.$_POST['email'].'\', \''.$_POST['adresse'].'\', \''.$_POST['coobanquenum'].'\', \''.$_POST['dateexpiration'].'\', \''.$_POST['cryptocarte'].'\')';
+    $sql = 'INSERT INTO acheteur (login, nom, prenom, motDePasse, adresseMail, adresse, cooBanqueNum, dateExpiration, cryptoCarte) VALUES (\'' . $login . '\', \''. $nom . '\',\''.$prenom. '\', \''. $_POST['password'].'\', \''.$email.'\', \''.$adresse.'\', \''.$_POST['coobanquenum'].'\', \''.$_POST['dateexpiration'].'\', \''.$_POST['cryptocarte'].'\')';
 
 } else if($_POST['userType'] == 'Vendeur'){
-    $sql = 'INSERT INTO vendeur (login, nom, prenom, motDePasse, adresseMail, adresse, cooBanqueNum, dateExpiration, cryptoCarte) VALUES (\'' . $_POST['login'] . '\', \''. $_POST['nom'] . '\',\''.$_POST['prenom']. '\', \''. $_POST['password'].'\', \''.$_POST['email'].'\', \''.$_POST['adresse'].'\', \''.$_POST['coobanquenum'].'\', \''.$_POST['dateexpiration'].'\', \''.$_POST['cryptocarte'].'\')';
+    $sql = 'INSERT INTO vendeur (login, nom, prenom, motDePasse, adresseMail, adresse, cooBanqueNum, dateExpiration, cryptoCarte) VALUES (\'' . $login . '\', \''. $nom . '\',\''.$prenom. '\', \''. $_POST['password'].'\', \''.$email.'\', \''.$adresse.'\', \''.$_POST['coobanquenum'].'\', \''.$_POST['dateexpiration'].'\', \''.$_POST['cryptocarte'].'\')';
 
 } else { // Admin
-    $sql = 'INSERT INTO administrateur (login, nom, prenom, motDePasse, adresseMail) VALUES (\'' . $_POST['login'] . '\', \''. $_POST['nom'] . '\',\''.$_POST['prenom']. '\', \''. $_POST['password'].'\', \''.$_POST['email'].'\')';
+    $sql = 'INSERT INTO administrateur (login, nom, prenom, motDePasse, adresseMail) VALUES (\'' . $login . '\', \''. $nom . '\',\''.$prenom. '\', \''. $_POST['password'].'\', \''.$email.'\')';
 
 }
 $resultset = $conn->prepare($sql);
@@ -45,21 +49,20 @@ if(!$exe){
     header('Location: /~na18a028/view/signin.php');
 } else{
     if( $_POST['userType'] == 'Acheteur'){
-        $sql2 = 'INSERT INTO Panier (loginAcheteur, quantité) VALUES (\''.$_POST['login'].'\', 0)';
+        $sql2 = 'INSERT INTO Panier (loginAcheteur, quantité) VALUES (\''.$login.'\', 0)';
         $resultset = $conn->prepare($sql2);
         $exe = $resultset->execute();
     }
     if($exe){
         session_unset();
         $_SESSION['userType'] = $_POST['userType'];
-        $_SESSION['login'] = $_POST['login'];
+        $_SESSION['login'] = $login;
         $_SESSION['password'] = $_POST['password'];
-        $_SESSION['nom'] = $_POST['nom'];
-        $_SESSION['prenom'] = $_POST['prenom'];
-        $_SESSION['adressemail'] = $_POST['adressemail'];
-        if(isset($_POST['adresse'])){
-            $_SESSION['adresse'] = $_POST['adresse'];
-        }
+        $_SESSION['nom'] = $nom;
+        $_SESSION['prenom'] = $prenom;
+        $_SESSION['email'] = $email;
+        $_SESSION['adresse'] = $adresse;
+        $_SESSION['nbAnnoncePanier'] = 0;
         if(isset($_POST['coobanquenum'])){
             $_SESSION['coobanquenum'] = $_POST['coobanquenum'];
         }

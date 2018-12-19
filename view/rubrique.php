@@ -131,6 +131,11 @@ session_start();
             $nom = $rubrique[0];
             $type = $rubrique[1];
             echo '<h5 style="margin-bottom:20px">'.$nom.'</h5>';
+            $sql = 'SELECT * FROM rubrique WHERE nom=\''.$nom.'\'';
+            $resultset = $conn->prepare($sql);
+            $resultset->execute();
+            $row = $resultset->fetch(PDO::FETCH_ASSOC);
+            echo '<p>'.$row['description'].'</p>';
 
             $sql = 'SELECT * FROM annonce, rubrique, annoncedansrubrique WHERE annonce.loginvendeur = annoncedansrubrique.annoncevendeur AND annonce.titre = annoncedansrubrique.annoncetitre AND rubrique.nom = annoncedansrubrique.rubriquenom AND rubrique.nom=\''.$nom.'\' AND rubrique.type=\''.$type.'\'';
             $resultset = $conn->prepare($sql);
@@ -142,7 +147,9 @@ session_start();
                 }
                 echo '<div class="col-sm-4">';
                 echo '<div class="card" style="height: 450px;">';
+                echo '<a href="/~na18a028/view/annonce.php?loginvendeur='.$row['loginvendeur'].'&annoncetitre='.$row['titre'].'">';
                 echo '<img class="card-img-top" height="300px" width="300px" src="'.$row['photographie'].'" alt="Card image cap">';
+                echo '</a>';
                 echo '<div class="card-body">';
                 echo '<h5 class="card-title">'.$row['titre']."      ".$row['prix'].'€</h5>';
                 echo '<p class="card-text">'.'Vendeur: '.$row['loginvendeur'].'</p>';

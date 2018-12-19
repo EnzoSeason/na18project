@@ -63,7 +63,8 @@ if ($row){
         header('Location: /~na18a028/view/modifierAnnonce.php');
     } else {
         $photo_url = 'http://tuxa.sme.utc/~na18a028/image/'. basename($_FILES["photographie"]["name"]);
-        $sql = 'UPDATE annonce SET description=\''.$_POST['description'].'\', photographie=\''.$photo_url.'\', prix='.$_POST['prix'].', tag=\''.$_POST['tag'].'\' WHERE loginvendeur=\''.$_SESSION['login'].'\' AND titre=\''.$_POST['submit'].'\'';
+        $description = str_replace("'","''",$_POST['description']);
+        $sql = 'UPDATE annonce SET description=\''.$description.'\', photographie=\''.$photo_url.'\', prix='.$_POST['prix'].', tag=\''.$_POST['tag'].'\' WHERE loginvendeur=\''.$_SESSION['login'].'\' AND titre=\''.$_POST['submit'].'\'';
         $resultset = $conn->prepare($sql);
         $exe = $resultset->execute();
         if($exe){

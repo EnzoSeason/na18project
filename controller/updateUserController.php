@@ -7,10 +7,15 @@ $dbuser = 'na18a028';
 $dbPassword = 'rWoO38Ra';
 $conn = new PDO($config,$dbuser,$dbPassword);
 
+$nom = str_replace("'","''",$_POST['nom']);
+$prenom = str_replace("'","''",$_POST['prenom']);
+$email = str_replace("'","''",$_POST['email']);
+$adresse = str_replace("'","''",$_POST['adresse']);
+
 if($_SESSION['userType'] != 'Admin') {
-    $sql = 'UPDATE '.$_SESSION['userType'].' SET nom=\''.$_POST['nom'].'\', prenom=\''.$_POST['prenom'].'\', motdepasse=\''.$_POST['password'].'\', adressemail=\''.$_POST['email'].'\', adresse=\''.$_POST['adresse'].'\', coobanquenum='.$_POST['coobanquenum'].', dateexpiration=\''.$_POST['dateexpiration'].'\', cryptocarte='.$_POST['cryptocarte'].' WHERE login=\''.$_SESSION['login'].'\'';
+    $sql = 'UPDATE '.$_SESSION['userType'].' SET nom=\''.$nom.'\', prenom=\''.$prenom.'\', motdepasse=\''.$_POST['password'].'\', adressemail=\''.$email.'\', adresse=\''.$adresse.'\', coobanquenum='.$_POST['coobanquenum'].', dateexpiration=\''.$_POST['dateexpiration'].'\', cryptocarte='.$_POST['cryptocarte'].' WHERE login=\''.$_SESSION['login'].'\'';
 } else {
-    $sql = 'UPDATE administrateur SET nom=\''.$_POST['nom'].'\', prenom=\''.$_POST['prenom'].'\', motdepasse=\''.$_POST['password'].'\', adressemail=\''.$_POST['email'].'\' WHERE login=\''.$_SESSION['login'].'\'';
+    $sql = 'UPDATE administrateur SET nom=\''.$nom.'\', prenom=\''.$prenom.'\', motdepasse=\''.$_POST['password'].'\', adressemail=\''.$email.'\' WHERE login=\''.$_SESSION['login'].'\'';
 }
 
 $userType = $_SESSION['userType'];
@@ -25,12 +30,10 @@ if($exe){
     $_SESSION['userType'] = $userType;
     $_SESSION['login'] = $login;
     $_SESSION['password'] = $_POST['password'];
-    $_SESSION['nom'] = $_POST['nom'];
-    $_SESSION['prenom'] = $_POST['prenom'];
-    $_SESSION['email'] = $_POST['email'];
-    if(isset($_POST['adresse'])){
-        $_SESSION['adresse'] = $_POST['adresse'];
-    }
+    $_SESSION['nom'] = $nom;
+    $_SESSION['prenom'] = $prenom;
+    $_SESSION['email'] = $email;
+    $_SESSION['adresse'] = $adresse;
     if(isset($_POST['coobanquenum'])){
         $_SESSION['coobanquenum'] = $_POST['coobanquenum'];
     }

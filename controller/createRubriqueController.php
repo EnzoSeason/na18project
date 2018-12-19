@@ -14,7 +14,9 @@ $dbuser = 'na18a028';
 $dbPassword = 'rWoO38Ra';
 $conn = new PDO($config,$dbuser,$dbPassword);
 
-$sql = 'INSERT INTO Rubrique (nom, type, description, loginAdmin) VALUES (\''.$_POST['nom'].'\', \''.$_POST['type'].'\', \''.$_POST['description'].'\', \''.$_SESSION['login'].'\')';
+$description = str_replace("'","''",$_POST['description']);
+
+$sql = 'INSERT INTO Rubrique (nom, type, description, loginAdmin) VALUES (\''.$_POST['nom'].'\', \''.$_POST['type'].'\', \''.$description.'\', \''.$_SESSION['login'].'\')';
 $resultset = $conn->prepare($sql);
 $exe = $resultset->execute();
 var_dump($exe);
